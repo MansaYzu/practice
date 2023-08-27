@@ -1,8 +1,13 @@
 package file;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.nio.ByteBuffer;
+import java.nio.channels.SeekableByteChannel;
+import java.nio.charset.Charset;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
@@ -11,10 +16,12 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
+import java.util.List;
 
 public class File {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		FileSystem fs = FileSystems.getDefault();
 		Path path1 = fs.getPath("D:/test1.txt");
 		Path path2 = Paths.get("D:", ".", "test2.txt");
@@ -99,6 +106,7 @@ public class File {
 			e.printStackTrace();
 		}
 		
+		// Listing a Directory’s Contents
 		Path projSrcPath = projDirP.resolve("src");
 		try(DirectoryStream<Path> ds = Files.newDirectoryStream(projSrcPath, "*")) {
 			System.out.println("files in " + projSrcPath);
@@ -106,6 +114,45 @@ public class File {
 				System.out.println((Files.isDirectory(filePath) ? "[dir] " : "[file] ") + filePath.getFileName());
 			}
 			System.out.println();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// Reading/Writing All Bytes or Lines from a File)
+		System.out.println();
+		System.out.println("** read file line then print:");
+		try {
+			List<String> lines = Files.readAllLines(readmePath, Charset.defaultCharset());
+			for (String line: lines) {
+				System.out.println(line);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// SeekableByteChannel
+		System.out.println();
+		System.out.println("** try SeekableByteChannel:");
+		try {
+			SeekableByteChannel bc = Files.newByteChannel(readmePath, StandardOpenOption.READ);
+			System.out.println("from position: " + bc.position());
+			System.out.println("position set to 6");
+			bc.position(6);
+			ByteBuffer buf = ByteBuffer.allocate(100);
+			bc.read(buf);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// BufferedReader
+		System.out.println();
+		System.out.println("use BufferedReader to read file line");
+		Path readme2Path = projDirP.resolve("readme2.txt");
+		Files.createFile(readme2Path);
+		try(BufferedReader br = Files.newBufferedReader(readmePath, Charset.defaultCharset());
+			BufferedWriter bw = Files.newBufferedWriter(readme2Path, Charset.defaultCharset(), StandardOpenOption.WRITE)) {
+			String line = br.readLine();
+			bw.write(line);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
