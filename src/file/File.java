@@ -27,7 +27,7 @@ public class File {
 		Path path2 = Paths.get("D:", ".", "test2.txt");
 		System.out.println("file1 name: " +  path1.getFileName());
 		System.out.println("file2 name: " +  path2.getFileName());
-		System.out.println("file2 to file1 path: " +  path1.relativize(path2));
+		System.out.println("file1 to file2 path: " +  path1.relativize(path2));
 		System.out.println("file1 exists? " + Files.exists(path1));
 		System.out.println("file2 not exists? " + Files.notExists(path2));
 		
@@ -49,7 +49,7 @@ public class File {
 			System.out.println("is link RegularFile: " + Files.isRegularFile(link1p));
 			System.out.println("is link SymbolicLink: " + Files.isSymbolicLink(link1p));
 			System.out.println("is link same to target file: " + Files.isSameFile(link1p, readmePath));
-			System.out.println("target file path" + Files.readSymbolicLink(link1p));
+			System.out.println("target file path: " + Files.readSymbolicLink(link1p));
 			System.out.println();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -65,7 +65,7 @@ public class File {
 			System.out.println("is link SymbolicLink: " + Files.isSymbolicLink(link2p));
 			System.out.println("is link same to target file: " + Files.isSameFile(link2p, readmePath));
 			System.out.println("is link same to testLink: " + Files.isSameFile(link2p, link1p));
-			System.out.println("target file path" + Files.readSymbolicLink(link2p));
+			System.out.println("target file path: " + Files.readSymbolicLink(link2p));
 			
 			String linkData = new String(Files.readAllBytes(link2p));
 	        System.out.println("Linked file content: " + linkData);

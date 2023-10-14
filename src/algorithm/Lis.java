@@ -10,7 +10,7 @@ public class Lis {
 	public static void main(String[] args) {
 		int[] arr = new int[] {-7, 9, 10, 2, 3, 11, 8};
 		System.out.print("較優先吻合的LIS: " + Arrays.toString(Lis.firstMeaat(arr)) + "\n");
-		System.out.printf("較優先吻合的LIS: %s%n", Arrays.toString(Lis.preferBigVal(arr)));
+		System.out.printf("總數較高吻合的LIS: %s%n", Arrays.toString(Lis.preferBigVal(arr)));
 	}
 
 	/**
@@ -76,8 +76,8 @@ public class Lis {
 						lisLens[i] = lisLens[j] + 1;
 						// 算出LIS長度時，記錄前一個元素的索引(類似鍵結串列概念)
 						lisPrev[i] = j;
-					} else if (lisLens[j] + 1 >= lisLens[i]) { // 長度一樣
-						if (sequence[j] > sequence[lisPrev[i]]) {
+					} else if (lisLens[j] + 1 == lisLens[i]) { // 長度一樣
+						if (sequence[j] > sequence[lisPrev[i]]) { // 若數字比較大選數字大的
 							lisPrev[i] = j;	
 						}
 					}

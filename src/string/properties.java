@@ -36,7 +36,7 @@ public class properties {
 		prop.list(System.out);
 		
 		System.out.print("hostName: ");
-		System.out.println(prop.getProperty("hostName") + '\n');
+		System.out.println(prop.getProperty("hostName") + "\n");
 
 		System.out.println("properties [elements]:");
 		for (Enumeration<Object> e = prop.elements(); e.hasMoreElements();) {
